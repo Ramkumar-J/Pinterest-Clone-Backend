@@ -17,7 +17,7 @@ try {
     let connection=await mongoClient.connect(URL);
     // Select the database
     let db=connection.db("pinterest");
-    // hash mechanism
+    // hash mechanism f(x) + Secret key = hash value or Random number
     let salt=bcrypt.genSaltSync(10);
     let hash=bcrypt.hashSync(req.body.password,salt);
     req.body.password=hash;
