@@ -11,6 +11,23 @@ const mongodb=require("mongodb");
 const mongoClient=mongodb.MongoClient;
 const URL="mongodb+srv://ram:ram123@cluster0.fqwyo.mongodb.net/?retryWrites=true&w=majority";
 
+// Authentication
+function authenticate(req,res,next){
+    if(req.headers.authorization){
+        let decoded = jwt.verify(req.headers.authorization, 'thisissecretkey');
+        if(decoded){
+          next();
+        }
+        else{
+          res.status(401).json({message:"unauthorized"});
+        }
+      }
+      else{
+        res.status(401).json({message:"unauthorized"});
+      }
+}
+
+// Signup
 app.post("/signup",async (req,res) => {
 try {
     // Open the connection
@@ -31,6 +48,7 @@ try {
 }
 });
 
+// Login
 app.post("/login",async (req,res) => {
     try {
         // Open the connection
@@ -60,7 +78,40 @@ app.post("/login",async (req,res) => {
     }
 })
 
+// Create Pin
+app.post("/createpin",authenticate,async (req,res) => {
+    try {
+        // Open the connection
+        let connection=await mongoClient.connect(URL);
+        // Select the database
+        let db=connection.db("pinterest");
+        // Select the collection and Do operation for the method
+        await db.collection("pin").insertOne(req.body);
+        // Close the connection
+        await connection.close();
+        res.json({message:"pin created successfully"})
+    } catch (error) {
+        res.status(500).json({message:"something went wrong"});
+    }
+})
 
-app.listen(3008, () => {
+// Get Pin
+app.get("/home",authenticate,async (req,res) => {
+    try {
+        // Open the connection
+        let connection=await mongoClient.connect(URL);
+        // Select the database
+        let db=connection.db("pinterest");
+        // Select the collection and Do operation for the method
+        let pins=await db.collection("pin").find().toArray();
+        // Close the connection
+        await connection.close();
+        res.json(pins);
+    } catch (error) {
+        res.status(500).json({message:"something went wrong"});
+    }
+})
+
+app.listen(process.env.PORT || 3008, () => {
   console.log("Web server on");
 });
