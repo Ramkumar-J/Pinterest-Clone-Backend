@@ -5,7 +5,7 @@ const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 const cors=require("cors");
 app.use(cors({
-    origin:"http://localhost:3004"
+    origin:"https://leafy-tiramisu-d395e5.netlify.app/"
 }))
 const mongodb=require("mongodb");
 const mongoClient=mongodb.MongoClient;
