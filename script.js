@@ -112,6 +112,18 @@ app.get("/home",authenticate,async (req,res) => {
     }
 })
 
+app.get("/viewpin/:id",async (req,res) => {
+try {
+    let connection=await mongoClient.connect(URL);
+    let db=connection.db("pinterest");
+    let pin=await db.collection("pin").findOne({ _id: mongodb.ObjectId(req.params.id) });
+    await connection.close();
+    res.json(pin);
+} catch (error) {
+    res.status(500).json({message:"Something went wrong"});
+}
+})
+
 app.listen(process.env.PORT || 3008, () => {
   console.log("Web server on");
 });
