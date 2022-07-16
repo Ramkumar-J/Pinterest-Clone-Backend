@@ -97,14 +97,10 @@ app.post("/createpin",authenticate,async (req,res) => {
 
 // Get Pin
 app.get("/home",authenticate,async (req,res) => {
-    try {
-        // Open the connection
-        let connection=await mongoClient.connect(URL);
-        // Select the database
+    try {  
+        let connection=await mongoClient.connect(URL);  
         let db=connection.db("pinterest");
-        // Select the collection and Do operation for the method
         let pins=await db.collection("pin").find().toArray();
-        // Close the connection
         await connection.close();
         res.json(pins);
     } catch (error) {
