@@ -108,6 +108,7 @@ app.get("/home",authenticate,async (req,res) => {
     }
 })
 
+// View pin
 app.get("/viewpin/:id",async (req,res) => {
 try {
     let connection=await mongoClient.connect(URL);
