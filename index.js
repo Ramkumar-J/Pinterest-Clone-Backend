@@ -1,4 +1,6 @@
 const express=require("express");
+const dotenv=require("dotenv");
+dotenv.config();
 const app=express();
 app.use(express.json());
 const bcrypt=require("bcryptjs");
@@ -121,6 +123,8 @@ try {
 }
 })
 
-app.listen(process.env.PORT || 3008, () => {
-  console.log("Web server on");
+const port = process.env.PORT || 3008;
+
+app.listen(port, () => {
+  console.log(`Web server on at ${port}`);
 });
