@@ -7,7 +7,7 @@ const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
 const cors=require("cors");
 app.use(cors({
-    origin:["https://nimble-scone-6fb9aa.netlify.app/","http://localhost:3004"]
+    origin:["https://nimble-scone-6fb9aa.netlify.app","http://localhost:3004"]
 }))
 const mongodb=require("mongodb");
 const mongoClient=mongodb.MongoClient;
